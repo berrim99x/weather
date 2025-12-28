@@ -1,10 +1,13 @@
-from src.use_cases.query_weather_forecast.boundaries.weather_forecast_repository_interface import \
-    WeatherForecastRepositoryInterface
+from abc import ABC, abstractmethod
 
+class WeatherForecastRepositoryInterface(ABC):
+    @abstractmethod
+    def get(self, city: str):
+        raise NotImplementedError
 
-class WeatherForecastRepository:
-    pass
-
+class WeatherForecastRepository(WeatherForecastRepositoryInterface):
+    def get(self, city: str):
+        return None
 
 def test_repository_implements_weather_forecast_repository_interface():
     # Arrange
