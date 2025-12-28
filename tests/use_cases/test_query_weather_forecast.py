@@ -3,18 +3,36 @@ from unittest.mock import Mock
 
 
 class InputDTO:
-    pass
+    def __init__(self, city: str):
+        self.city = city
+
 class OutputDTO:
-    pass
+    def __init__(self, success: bool, weather_data=None):
+        self.success = success
+        self.weather_data = weather_data
+
 
 class PresenterInterface:
-    pass
+    def present(self, output_dto):
+        raise NotImplementedError
+
 
 class WeatherForecastRepositoryInterface:
-    pass
-
+    def get(self, city: str):
+        raise NotImplementedError
 class QueryWeatherForecastUseCase:
-    pass
+    def __init__(self, weather_forecast_repository, presenter):
+        self.weather_forecast_repository = weather_forecast_repository
+        self.presenter = presenter
+
+    def execute(self, input_dto):
+        forecast = self.weather_forecast_repository.get(input_dto.city)
+
+        if forecast is None:
+            self.presenter.present(
+                OutputDTO(success=False, weather_data=None)
+            )
+
 
 def test_should_present_unsuccess_when_weather_forecast_does_not_exist():
     # Arrange
