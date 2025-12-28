@@ -20,7 +20,7 @@ class QueryWeatherForecastUseCase:
         forecast = self.weather_forecast_repository.get(input_dto.city)
 
         output = self._build_output(forecast)
-        self.presenter.present(output)
+        return self.presenter.present(output)
 
     def _build_output(self, forecast):
         if forecast is None:
