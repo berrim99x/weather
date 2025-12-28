@@ -29,3 +29,30 @@ def test_should_present_unsuccess_when_weather_forecast_does_not_exist():
     output_dto = presenter.present.call_args.args[0]
 
     assert output_dto.success is False
+
+
+def test_should_present_success_when_weather_forecast_exists():
+    # Arrange
+    weather_forecast_repository = Mock(spec=WeatherForecastRepositoryInterface)
+    weather_forecast_repository.get.return_value = {
+        "temp": 25,
+        "condition": "Sunny"
+    }
+
+    presenter = Mock(spec=PresenterInterface)
+
+    use_case = QueryWeatherForecastUseCase(
+        weather_forecast_repository,
+        presenter,
+    )
+
+    input_dto = InputDTO(city="Algiers")
+
+    # Act
+    use_case.execute(input_dto)
+
+    # Assert
+    presenter.present.assert_called_once()
+    output_dto = presenter.present.call_args.args[0]
+
+    assert output_dto.success is True
