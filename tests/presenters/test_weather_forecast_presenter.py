@@ -2,7 +2,13 @@ from src.use_cases.query_weather_forecast.output_dto import OutputDTO
 
 
 class WeatherForecastPresenter:
-    pass
+    def present(self, output_dto):
+        if not output_dto.success:
+            return {
+                "status": "error",
+                "data": None,
+            }
+
 
 
 def test_presenter_should_return_error_view_model_when_unsuccessful():
