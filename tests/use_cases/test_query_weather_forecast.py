@@ -1,37 +1,10 @@
 from unittest.mock import Mock
 
-
-
-class InputDTO:
-    def __init__(self, city: str):
-        self.city = city
-
-class OutputDTO:
-    def __init__(self, success: bool, weather_data=None):
-        self.success = success
-        self.weather_data = weather_data
-
-
-class PresenterInterface:
-    def present(self, output_dto):
-        raise NotImplementedError
-
-
-class WeatherForecastRepositoryInterface:
-    def get(self, city: str):
-        raise NotImplementedError
-class QueryWeatherForecastUseCase:
-    def __init__(self, weather_forecast_repository, presenter):
-        self.weather_forecast_repository = weather_forecast_repository
-        self.presenter = presenter
-
-    def execute(self, input_dto):
-        forecast = self.weather_forecast_repository.get(input_dto.city)
-
-        if forecast is None:
-            self.presenter.present(
-                OutputDTO(success=False, weather_data=None)
-            )
+from src.use_cases.query_weather_forecast.boundaries.presenter_interface import PresenterInterface
+from src.use_cases.query_weather_forecast.boundaries.weather_forecast_repository_interface import \
+    WeatherForecastRepositoryInterface
+from src.use_cases.query_weather_forecast.input_dto import InputDTO
+from src.use_cases.query_weather_forecast.use_case import QueryWeatherForecastUseCase
 
 
 def test_should_present_unsuccess_when_weather_forecast_does_not_exist():
